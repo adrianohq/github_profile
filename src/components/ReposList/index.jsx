@@ -7,22 +7,43 @@ const ReposList = ({ nomeUsuario }) => {
 
     useEffect(() => {
         setEstaCarregando(true);
-        fetch(`https://api.github.com/users/${nomeUsuario}/repos`)
-            .then(res => res.json())
-            .then(resJson => {
+        const fetchRepositorios = async () => {
+            try {
+                const res = await fetch(`https://api.github.com/users/${nomeUsuario}/repos`);
+                if (!res.ok) {
+                    throw new Error('Erro ao carregar os repositórios. Por favor, verifique o nome de usuário.');
+                }
+                const resJson = await res.json();
                 setTimeout(() => {
                     setEstaCarregando(false);
                     setRepos(resJson);
-                }, 1000)
-            })
-    }, [nomeUsuario])
+                }, 1000);
+            } catch (error) {
+                console.error('Erro:', error.message);
+                setEstaCarregando(false);
+                setRepos([]);
+            }
+        };
+
+        fetchRepositorios();
+    }, [nomeUsuario]);
+
+    if (estaCarregando && repos.length === 0) {
+        return <h1>Carregando...</h1>;
+    }
+
     return (
         <div className="container">
+            {repos.length === 0 && (
+                <div>
+                    <h1>Usuário inválido</h1>
+                    <h2>Verifique se digitou o usuário corretamente e tente novamente!</h2>
+                </div>
+            )}
             {estaCarregando ? (
                 <h1>Carregando...</h1>
             ) : (
                 <ul className={styles.list}>
-                    {/* {{repos.map(repositorio => (} */}
                     {repos.map(({ id, name, language, html_url }) => (
                         <li className={styles.listItem} key={id}>
                             <div className={styles.itemName}>
@@ -39,7 +60,7 @@ const ReposList = ({ nomeUsuario }) => {
                 </ul>
             )}
         </div>
-    )
+    );
 }
 
 export default ReposList;

@@ -11,6 +11,24 @@
     margin: 0 auto;
 }
 
+.startForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 15vh;
+    background-color: var(--corSecundaria);
+    color: var(--corPrincipal);
+}
+
+.userInput {
+    margin: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    outline: none;
+}
+
 :root {
     --corPrincipal: #f9ca24;
     --corSecundaria: #111;

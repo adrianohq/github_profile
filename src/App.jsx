@@ -10,7 +10,11 @@ function App() {
 
   return (
     <>
-      <input type="text" onBlur={(e) => setNomeUsuario(e.target.value)} />
+      <div className="startForm">
+        <h2>Insira o usuário do Github</h2>
+        <input className="userInput" type="text" onBlur={(e) => setNomeUsuario(e.target.value)} />
+        <h3>e clique fora do formulário para pesquisar</h3>
+      </div>
 
       {nomeUsuario.length > 4 && (
         <>
